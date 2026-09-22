@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Science Hub - All Subjects & Chapters</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+        body.dark-mode {
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        body.dark-mode header {
+            background-color: #1e293b;
+            border-bottom: 1px solid #334155;
+        }
+        body.dark-mode .card, body.dark-mode .quiz-card, body.dark-mode .chapter-item {
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+        body.dark-mode .option-btn {
+            background-color: #334155;
+            color: #f8fafc;
+            border-color: #475569;
+        }
+        body.dark-mode .option-btn:hover {
+            background-color: #475569;
+        }
+        header {
+            background: #0b132b;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .header-btn {
+            background: #4f46e5;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 15px;
+            flex: 1;
+            width: 100%;
+        }
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid #4f46e5;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #4f46e5;
+        }
+        .card p {
+            font-size: 13px;
+            color: #64748b;
+        }
+        body.dark-mode .card p { color: #94a3b8; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+        .back-btn {
+            background: #64748b;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .chapters-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chapter-item {
+            background: white;
+            padding: 14px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .chapter-item:hover {
+            background: #4f46e5;
+            color: white;
+        }
+        .quiz-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .badge {
+            background: #4f46e5;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .timer {
+            background: #ef4444;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .option-btn.correct {
+            background: #22c55e !important;
+            color: white;
+            border-color: #22c55e;
+        }
+        .option-btn.wrong {
+            background: #ef4444 !important;
+            color: white;
+            border-color: #ef4444;
+        }
+        .explanation {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px;
+            font-size: 14px;
+            border-radius: 4px;
+            display: none;
+            margin-top: 15px;
+        }
+        body.dark-mode .explanation {
+            background: #1e293b;
+            color: #93c5fd;
+        }
+        footer {
+            background-color: #0b132b;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 15px;
+            margin-top: auto;
+            border-top: 1px solid #1e293b;
+        }
+        footer p { margin: 0 0 6px 0; font-size: 14px; }
+        footer a { color: #94a3b8; text-decoration: none; margin: 0 6px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo" onclick="goHome()">
+            🔬 Smart Science Hub
+        </div>
+        <div class="nav-links">
+            <button onclick="toggleDarkMode()" id="darkModeBtn" class="header-btn" style="background: #334155;">🌙 डार्क मोड</button>
+            <a href="https://smarttoolshub-in.github.io/Queses./" target="_blank" class="header-btn">🧠 Reasoning Hub</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- 1. विषय चयन -->
+        <div id="subjectsView" class="view-section active">
+            <h2 style="margin-bottom: 20px; color: #4f46e5;">विज्ञान के सभी विषय चुनें</h2>
+            <div class="subjects-grid">
+                <div class="card" onclick="openSubject('physics')">
+                    <h3>⚡ Physics (भौतिकी)</h3>
+                    <p>11 चैप्टर्स (मात्रक, गति, बल, प्रकाश आदि)</p>
+                </div>
+                <div class="card" onclick="openSubject('chemistry')">
+                    <h3>🧪 Chemistry (रसायन विज्ञान)</h3>
+                    <p>10 चैप्टर्स (पदार्थ, परमाणु, अम्ल-क्षार आदि)</p>
+                </div>
+                <div class="card" onclick="openSubject('biology')">
+                    <h3>🧬 Biology (जीव विज्ञान)</h3>
+                    <p>10 चैप्टर्स (कोशिका, मानव तंत्र, विटामिन आदि)</p>
+                </div>
+                <div class="card" onclick="openSubject('earth')">
+                    <h3>🌍 Earth Science (पृथ्वी विज्ञान)</h3>
+                    <p>5 चैप्टर्स (संरचना, भूकंप आदि)</p>
+                </div>
+                <div class="card" onclick="openSubject('env')">
+                    <h3>🌱 Environmental Science (पर्यावरण)</h3>
+                    <p>5 चैप्टर्स (प्रदूषण, पारिस्थितिकी आदि)</p>
+                </div>
+                <div class="card" onclick="openSubject('computer')">
+                    <h3>💻 Computer Science (कंप्यूटर)</h3>
+                    <p>5 चैप्टर्स (इंट्रोडक्शन, ओएस आदि)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. चैप्टर लिस्ट व्यू -->
+        <div id="chaptersView" class="view-section">
+            <button class="back-btn" onclick="goHome()">⬅ सभी विषयों पर वापस जाएं</button>
+            <h2 id="subjectTitle" style="margin-bottom: 15px; color: #4f46e5;">चैप्टर्स</h2>
+            <div class="chapters-list" id="chaptersListContainer"></div>
+        </div>
+
+        <!-- 3. क्विज़ व्यू -->
+        <div id="quizView" class="view-section">
+            <button class="back-btn" onclick="backToChapters()">⬅ चैप्टर्स पर वापस जाएं</button>
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <span class="badge" id="chapterBadge">चैप्टर नाम</span>
+                    <span class="timer" id="timer">⏱️ 15s</span>
+                </div>
+                <div class="question-text" id="questionText">प्रश्न लोड हो रहा है...</div>
+                <div class="options-list" id="optionsList"></div>
+                <div class="explanation" id="explanationBox"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>SmartToolsHub - आपका अपना स्मार्ट टूल पोर्टल</p>
+        <p><a href="#">About Us</a> • <a href="#">Privacy Policy</a> • <a href="#">Contact</a></p>
+        <p style="font-size: 12px; color: #64748b;">© 2026 SmartToolsHub. सर्वाधिकार सुरक्षित।</p>
+    </footer>
+
+    <script>
+        const scienceHubData = {
+            physics: {
+                title: "Physics (भौतिकी) - चैप्टर्स",
+                chapters: {
+                    p1: { name: "1. मात्रक और मापन", questions: [{ q: "कार्य और ऊर्जा का SI मात्रक क्या है?", options: ["जूल", "न्यूटन", "वाट", "डाइन"], answer: 0, exp: "कार्य और ऊर्जा दोनों का SI मात्रक जूल (Joule) होता है।" }] },
+                    p2: { name: "2. गति और बल", questions: [{ q: "बल का SI मात्रक क्या है?", options: ["जूल", "न्यूटन", "पास्कल", "हर्ट्ज़"], answer: 1, exp: "बल का SI मात्रक न्यूटन है।" }] },
+                    p3: { name: "3. कार्य, ऊर्जा और शक्ति", questions: [{ q: "सामर्थ्य (Power) का सूत्र क्या है?", options: ["W/t", "F*s", "m*g*h", "1/2 mv^2"], answer: 0, exp: "शक्ति P = W / t होती है।" }] },
+                    p4: { name: "4. गुरुत्वाकर्षण", questions: [{ q: "गुरुत्वाकर्षण नियतांक (G) किसने दिया?", options: ["न्यूटन", "केपलर", "हेनरी कैवेंडिश", "आइंस्टीन"], answer: 2, exp: "G का मान हेनरी कैवेंडिश द्वारा ज्ञात किया गया।" }] },
+                    p5: { name: "5. पदार्थ के सामान्य गुण", questions: [{ q: "पास्कल किसका मात्रक है?", options: ["दाब", "वर्षा", "आर्द्रता", "त्वरण"], answer: 0, exp: "दाब का मात्रक पास्कल होता है।" }] },
+                    p6: { name: "6. ऊष्मा और ताप", questions: [{ q: "मानव शरीर का सामान्य तापमान कितना होता है?", options: ["37°C", "98.6°C", "100°C", "310°C"], answer: 0, exp: "मानव शरीर का सामान्य तापमान 37°C होता है।" }] },
+                    p7: { name: "7. प्रकाशिकी (Light)", questions: [{ q: "दाढ़ी बनाने के लिए किस दर्पण का उपयोग होता है?", options: ["उत्तल दर्पण", "अवतल दर्पण", "समतल दर्पण", "इनमें से कोई नहीं"], answer: 1, exp: "अवतल दर्पण का उपयोग आवर्धित प्रतिबिंब के लिए होता है।" }] },
+                    p8: { name: "8. ध्वनि (Sound)", questions: [{ q: "ध्वनि की चाल सबसे अधिक किसमें होती है?", options: ["वायु", "जल", "इस्पात (Steel)", "निर्वात"], answer: 2, exp: "ठोस पदार्थों में ध्वनि की चाल सबसे अधिक होती है।" }] },
+                    p9: { name: "9. विद्युत धारा", questions: [{ q: "विद्युत धारा का SI मात्रक क्या है?", options: ["वोल्ट", "एम्पियर", "ओम", "वाट"], answer: 1, exp: "विद्युत धारा को एम्पियर में मापा जाता है।" }] },
+                    p10: { name: "10. चुंबकत्व", questions: [{ q: "स्थाई चुंबक किससे बनाए जाते हैं?", options: ["नरम लोहा", "इस्पात", "तांबा", "एल्युमिनियम"], answer: 1, exp: "स्थाई चुंबक इस्पात से और अस्थाई नरम लोहे से बनते हैं।" }] },
+                    p11: { name: "11. आधुनिक भौतिकी", questions: [{ q: "रेडियोएक्टिवता की खोज किसने की थी?", options: ["मैडम क्यूरी", "हेनरी बेकुरल", "रदरफोर्ड", "आइंस्टीन"], answer: 1, exp: "रेडियोएक्टिवता की खोज हेनरी बेकुरल ने की थी।" }] }
+                }
+            },
+            chemistry: {
+                title: "Chemistry (रसायन विज्ञान) - चैप्टर्स",
+                chapters: {
+                    c1: { name: "1. पदार्थ और उसकी अवस्थाएं", questions: [{ q: "पदार्थ की चतुर्थ अवस्था क्या कहलाती है?", options: ["ठोस", "प्लाज्मा", "गैस", "बीईसी"], answer: 1, exp: "प्लाज्मा पदार्थ की चौथी अवस्था है।" }] },
+                    c2: { name: "2. परमाणु संरचना", questions: [{ q: "इलेक्ट्रॉन की खोज किसने की थी?", options: ["जे.जे. थॉमसन", "चैडविक", "रदरफोर्ड", "गोल्डस्टीन"], answer: 0, exp: "इलेक्ट्रॉन की खोज थॉमसन ने की थी।" }] },
+                    c3: { name: "3. आवर्त सारणी", questions: [{ q: "आधुनिक आवर्त सारणी किस पर आधारित है?", options: ["परमाणु भार", "परमाणु क्रमांक", "संयोजकता", "घनत्व"], answer: 1, exp: "यह परमाणु क्रमांक पर आधारित है।" }] },
+                    c4: { name: "4. रासायनिक बंधन", questions: [{ q: "नमक (NaCl) में कौन सा बंध होता है?", options: ["सहसंयोजक", "आयनिक बंध", "हाइड्रोजन", "धात्विक"], answer: 1, exp: "NaCl में आयनिक बंध होता है।" }] },
+                    c5: { name: "5. अम्ल, क्षार और लवण", questions: [{ q: "शुद्ध जल का pH मान कितना होता है?", options: ["0", "7", "14", "5"], answer: 1, exp: "शुद्ध जल उदासीन होता है, pH मान 7 होता है।" }] },
+                    c6: { name: "6. धातु और अधातु", questions: [{ q: "कौन सी धातु सामान्य ताप पर द्रव होती है?", options: ["पारा (Mercury)", "ब्रोमीन", "सोडियम", "लोहा"], answer: 0, exp: "पारा कमरे के तापमान पर द्रव होती है।" }] },
+                    c7: { name: "7. कार्बन और उसके यौगिक", questions: [{ q: "हीरा किसका अपररूप है?", options: ["सिलिकॉन", "कार्बन", "सल्फर", "फास्फोरस"], answer: 1, exp: "हीरा और ग्रेफाइट कार्बन के अपररूप हैं।" }] },
+                    c8: { name: "8. ईंधन", questions: [{ q: "बायोगैस का मुख्य घटक क्या है?", options: ["मीथेन", "इथेन", "प्रोपेन", "ब्यूटेन"], answer: 0, exp: "बायोगैस में मुख्य रूप से मीथेन होती है।" }] },
+                    c9: { name: "9. विलयन", questions: [{ q: "टिंक्चर आयोडीन क्या है?", options: ["आयोडीन का एल्कोहॉलीय विलयन", "नमक का पानी", "चीनी का घोल", "एसिड"], answer: 0, exp: "यह आयोडीन और अल्कोहल का मिश्रण है।" }] },
+                    c10: { name: "10. रासायनिक अभिक्रियाएं", questions: [{ q: "लोहे पर जंग लगना किस प्रकार की क्रिया है?", options: ["ऑक्सीकरण", "अपचयन", "उदासीनीकरण", "वाष्प"], answer: 0, exp: "जंग लगना ऑक्सीकरण का उदाहरण है।" }] }
+                }
+            },
+            biology: {
+                title: "Biology (जीव विज्ञान) - चैप्टर्स",
+                chapters: {
+                    b1: { name: "1. कोशिका: जीवन की इकाई", questions: [{ q: "कोशिका का पावर हाउस किसे कहते हैं?", options: ["राइबोसोम", "माइटोकॉन्ड्रिया", "लाइसोसोम", "केंद्रक"], answer: 1, exp: "माइटोकॉन्ड्रिया को ऊर्जा गृह कहते हैं।" }] },
+                    b2: { name: "2. ऊतक (Tissues)", questions: [{ q: "पौधों में जल का परिवहन कौन करता है?", options: ["जाइलम", "फ्लोएम", "कॉर्टेक्स", "पित्त"], answer: 0, exp: "जाइलम जल पहुँचाता है।" }] },
+                    b3: { name: "3. आनुवंशिकी", questions: [{ q: "आनुवंशिकी के पिता किसे कहा जाता है?", options: ["डार्विन", "ग्रेगर मेंडल", "लैमार्क", "वाटसन"], answer: 1, exp: "ग्रेगर जॉन मेंडल को आनुवंशिकी का जनक कहा जाता है।" }] },
+                    b4: { name: "4. पादप जगत", questions: [{ q: "पत्तियों का हरा रंग किसके कारण होता है?", options: ["कैरोटीन", "क्लोरोफिल", "एंथोसाइनिन", "हीमोग्लोबिन"], answer: 1, exp: "क्लोरोफिल के कारण पत्तियां हरी होती हैं।" }] },
+                    b5: { name: "5. मानव पाचन तंत्र", questions: [{ q: "मानव शरीर की सबसे बड़ी ग्रंथि कौन सी है?", options: ["यकृत (Liver)", "अग्नाशय", "थायरॉयड", "पिट्यूटरी"], answer: 0, exp: "यकृत शरीर की सबसे बड़ी ग्रंथि है।" }] },
+                    b6: { name: "6. रक्त परिसंचरण तंत्र", questions: [{ q: "किस रुधिर वर्ग को सर्वग्राही कहते हैं?", options: ["O", "AB", "A", "B"], answer: 1, exp: "AB ब्लड ग्रुप वाला व्यक्ति सभी से रक्त ले सकता है।" }] },
+                    b7: { name: "7. तंत्रिका तंत्र", questions: [{ q: "मानव शरीर की सबसे लंबी कोशिका कौन सी है?", options: ["तंत्रिका कोशिका (Neuron)", "यकृत", "मांसपेशी", "श्वेत कण"], answer: 0, exp: "न्यूरॉन शरीर की सबसे लंबी कोशिका है।" }] },
+                    b8: { name: "8. अंतःस्रावी ग्रंथियां", questions: [{ q: "मास्टर ग्रंथि किसे कहते हैं?", options: ["थायरॉयड", "पीयूष ग्रंथि (Pituitary)", "एड्रेनल", "अग्नाशय"], answer: 1, exp: "पिट्यूटरी ग्रंथि को मास्टर ग्रंथि कहते हैं।" }] },
+                    b9: { name: "9. विटामिन और रोग", questions: [{ q: "विटामिन सी की कमी से कौन सा रोग होता है?", options: ["रिकेट्स", "स्कर्वी", "बेरी-बेरी", "रतौंधी"], answer: 1, exp: "विटामिन सी की कमी से स्कर्वी होता है।" }] },
+                    b10: { name: "10. पारिस्थितिकी", questions: [{ q: "विश्व पर्यावरण दिवस कब मनाया जाता है?", options: ["5 जून", "22 अप्रैल", "16 सितंबर", "1 दिसंबर"], answer: 0, exp: "5 जून को विश्व पर्यावरण दिवस मनाया जाता है।" }] }
+                }
+            },
+            earth: {
+                title: "Earth Science (पृथ्वी विज्ञान) - चैप्टर्स",
+                chapters: {
+                    e1: { name: "1. पृथ्वी की आंतरिक संरचना", questions: [{ q: "पृथ्वी की सबसे बाहरी परत क्या है?", options: ["क्रस्ट (Crust)", "मैंटल", "कोर", "लिथोस्फीयर"], answer: 0, exp: "सबसे ऊपरी ठोस परत क्रस्ट है।" }] },
+                    e2: { name: "2. चट्टानें और खनिज", questions: [{ q: "संगमरमर किस प्रकार की चट्टान है?", options: ["आग्नेय", "अवसादी", "कायांतरित (Metamorphic)", "इनमें से कोई नहीं"], answer: 2, exp: "संगमरमर कायांतरित चट्टान है।" }] },
+                    e3: { name: "3. भूकंप और ज्वालामुखी", questions: [{ q: "भूकंप की तीव्रता किससे मापी जाती है?", options: ["सिस्मोग्राफ", "बैरोमीटर", "थर्मामीटर", "लेक्टोमीटर"], answer: 0, exp: "सिस्मोग्राफ और रिक्टर स्केल से मापते हैं।" }] },
+                    e4: { name: "4. वायुमंडल", questions: [{ q: "वायुमंडल में सबसे अधिक कौन सी गैस है?", options: ["ऑक्सीजन", "नाइट्रोजन", "कार्बन डाइऑक्साइड", "आर्गन"], answer: 1, exp: "नाइट्रोजन लगभग 78% है।" }] },
+                    e5: { name: "5. महासागर विज्ञान", questions: [{ q: "महासागरों की कुल संख्या कितनी है?", options: ["4", "5", "7", "3"], answer: 1, exp: "कुल 5 प्रमुख महासागर हैं।" }] }
+                }
+            },
+            env: {
+                title: "Environmental Science (पर्यावरण) - चैप्टर्स",
+                chapters: {
+                    en1: { name: "1. पारिस्थितिकी तंत्र", questions: [{ q: "पारिस्थितिकी शब्द किसने दिया था?", options: ["हैकेल", "टांसले", "डार्विन", "ओडम"], answer: 0, exp: "अर्नेस्ट हैकेल ने यह शब्द दिया था।" }] },
+                    en2: { name: "2. जैव विविधता संरक्षण", questions: [{ q: "काजीरंगा राष्ट्रीय उद्यान किसके लिए प्रसिद्ध है?", options: ["शेर", "एक सींग वाला गैंडा", "हाथी", "बाघ"], answer: 1, exp: "यह एक सींग वाले गैंडे के लिए प्रसिद्ध है।" }] },
+                    en3: { name: "3. पर्यावरण प्रदूषण", questions: [{ q: "इटाई-इटाई रोग किसके कारण होता है?", options: ["कैडमियम", "पारा", "आर्सेनिक", "सीसा"], answer: 0, exp: "कैडमियम प्रदूषण से यह रोग होता है।" }] },
+                    en4: { name: "4. जलवायु परिवर्तन", questions: [{ q: "ग्लोबल वार्मिंग के लिए मुख्य गैस कौन सी है?", options: ["CO2", "O2", "N2", "H2"], answer: 0, exp: "कार्बन डाइऑक्साइड मुख्य जिम्मेदार गैस है।" }] },
+                    en5: { name: "5. प्राकृतिक संसाधन", questions: [{ q: "नवीकरणीय ऊर्जा का उदाहरण क्या है?", options: ["सौर ऊर्जा", "कोयला", "पेट्रोलियम", "प्राकृतिक गैस"], answer: 0, exp: "सौर ऊर्जा नवीकरणीय स्रोत है।" }] }
+                }
+            },
+            computer: {
+                title: "Computer Science (कंप्यूटर) - चैप्टर्स",
+                chapters: {
+                    co1: { name: "1. कंप्यूटर का परिचय", questions: [{ q: "कंप्यूटर का मस्तिष्क किसे कहते हैं?", options: ["माउस", "CPU", "कीबोर्ड", "मॉनिटर"], answer: 1, exp: "CPU को कंप्यूटर का दिमाग कहते हैं।" }] },
+                    co2: { name: "2. ऑपरेटिंग सिस्टम", questions: [{ q: "लिनक्स (Linux) क्या है?", options: ["ऑपरेटिंग सिस्टम", "हार्डवेयर", "ब्राउज़र", "वायरस"], answer: 0, exp: "लिनक्स एक ओपन सोर्स ऑपरेटिंग सिस्टम है।" }] },
+                    co3: { name: "3. नेटवर्किंग", questions: [{ q: "WWW का पूरा रूप क्या है?", options: ["World Wide Web", "World Web Wide", "Web World Wide", "Wide World Web"], answer: 0, exp: "WWW का अर्थ World Wide Web है।" }] },
+                    co4: { name: "4. डेटाबेस और सुरक्षा", questions: [{ q: "फायरवॉल का उपयोग किसके लिए होता है?", options: ["सुरक्षा (Security)", "स्पीड बढ़ाने", "कूलिंग", "डिलीट करने"], answer: 0, exp: "फायरवॉल नेटवर्क सुरक्षा प्रदान करता है।" }] },
+                    co5: { name: "5. प्रोग्रामिंग बेसिक्स", questions: [{ q: "HTML का पूरा रूप क्या है?", options: ["Hyper Text Markup Language", "High Text Machine", "Hyper Tool", "None"], answer: 0, exp: "HTML वेब पेज बनाने की भाषा है।" }] }
+                }
+            }
+        };
+
+        let currentSubjectKey = '';
+        let currentChapterKey = '';
+        let currentQIndex = 0;
+        let timer;
+        let timeLeft = 15;
+
+        function goHome() {
+            clearInterval(timer);
+            document.getElementById('subjectsView').classList.add('active');
+            document.getElementById('chaptersView').classList.remove('active');
+            document.getElementById('quizView').classList.remove('active');
+        }
+
+        function openSubject(subjectKey) {
+            currentSubjectKey = subjectKey;
+            const subData = scienceHubData[subjectKey];
+            document.getElementById('subjectTitle').innerText = subData.title;
+            
+            const listContainer = document.getElementById('chaptersListContainer');
+            listContainer.innerHTML = '';
+
+            for (let chKey in subData.chapters) {
+                const ch = subData.chapters[chKey];
+                const btn = document.createElement('div');
+                btn.className = 'chapter-item';
+                btn.innerHTML = `<span>${ch.name}</span> <span>➔</span>`;
+                btn.onclick = () => openChapter(chKey);
+                listContainer.appendChild(btn);
+            }
+
+            document.getElementById('subjectsView').classList.remove('active');
+            document.getElementById('chaptersView').classList.add('active');
+            document.getElementById('quizView').classList.remove('active');
+        }
+
+        function backToChapters() {
+            clearInterval(timer);
+            openSubject(currentSubjectKey);
+        }
+
+        function openChapter(chKey) {
+            currentChapterKey = chKey;
+            currentQIndex = 0;
+
+            document.getElementById('chaptersView').classList.remove('active');
+            document.getElementById('quizView').classList.add('active');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            clearInterval(timer);
+            timeLeft = 15;
+            document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
+
+            const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
+            document.getElementById('chapterBadge').innerText = chapterData.name;
+
+            if (currentQIndex >= chapterData.questions.length) {
+                currentQIndex = 0;
+            }
+
+            const qData = chapterData.questions[currentQIndex];
+            document.getElementById('questionText').innerText = `Q. ${qData.q}`;
+
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(idx, qData.answer, qData.exp);
+                optionsList.appendChild(btn);
+            });
+
+            document.getElementById('explanationBox').style.display = 'none';
+            startTimer();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    autoNext();
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(selected, correct, exp) {
+            clearInterval(timer);
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons[selected].classList.add(selected === correct ? 'correct' : 'wrong');
+            buttons[correct].classList.add('correct');
+
+            const expBox = document.getElementById('explanationBox');
+            expBox.innerHTML = `<strong>स्पष्टीकरण:</strong> ${exp}`;
+            expBox.style.display = 'block';
+
+            setTimeout(() => {
+                currentQIndex++;
+                displayQuestion();
+            }, 3500);
+        }
+
+        function autoNext() {
+            currentQIndex++;
+            displayQuestion();
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.getElementById('darkModeBtn');
+            if (document.body.classList.contains('dark-mode')) {
+                btn.innerHTML = '☀️ लाइट मोड';
+                localStorage.setItem('science_theme', 'dark');
+            } else {
+                btn.innerHTML = '🌙 डार्क मोड';
+                localStorage.setItem('science_theme', 'light');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('science_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                const btn = document.getElementById('darkModeBtn');
+                if (btn) btn.innerHTML = '☀️ लाइट मोड';
+            }
+        });
+    </script>
+</body>
+</html>
