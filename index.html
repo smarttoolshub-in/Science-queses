@@ -15641,19 +15641,23 @@ let timeLeft = 15;
             document.getElementById('chaptersView').classList.remove('active');
             document.getElementById('quizView').classList.add('active');
             displayQuestion();
-        }
+        }        let score = 0; // स्कोर ट्रैक करने के लिए
 
-                function displayQuestion() {
+        function displayQuestion() {
             clearInterval(timer);
             timeLeft = 15;
             document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
 
             const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
-            document.getElementById('chapterBadge').innerText = chapterData.name;
-
+            
+            // अगर सारे प्रश्न खत्म हो गए हैं, तो रिजल्ट / स्कोर दिखाएं
             if (currentQIndex >= chapterData.questions.length) {
-                currentQIndex = 0;
+                showQuizResult(chapterData.questions.length);
+                return;
             }
+
+            // प्रश्न की नंबरिंग दिखाने के लिए (जैसे: प्रश्न 1 / 50)
+            document.getElementById('chapterBadge').innerText = `${chapterData.name} (प्रश्‍न ${currentQIndex + 1} / ${chapterData.questions.length})`;
 
             const qData = chapterData.questions[currentQIndex];
 
@@ -15675,11 +15679,19 @@ let timeLeft = 15;
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.innerText = opt;
-                btn.onclick = () => checkAnswer(idx, shuffledAnswer, qData.exp);
+                // डबल क्लिक या बार-बार क्लिक से बचाने के लिए चेक
+                btn.onclick = () => {
+                    if (btn.disabled) return; // यदि पहले ही क्लिक हो चुका है तो रोक दें
+                    checkAnswer(idx, shuffledAnswer, qData.exp);
+                };
                 optionsList.appendChild(btn);
             });
 
-            document.getElementById('explanationBox').style.display = 'none';
+            const expBox = document.getElementById('explanationBox');
+            if (expBox) {
+                expBox.style.display = 'none';
+            }
+            
             startTimer();
         }
 
@@ -15694,10 +15706,16 @@ let timeLeft = 15;
             }, 1000);
         }
 
+        function autoNext() {
+            currentQIndex++;
+            displayQuestion();
+        }
+
         function checkAnswer(selected, correct, exp) {
             clearInterval(timer);
             const buttons = document.querySelectorAll('.option-btn');
             
+            // तुरंत सभी बटन्स को डिसएबल कर दें ताकि डबल-क्लिक या हैंग होने की समस्या खत्म हो जाए
             buttons.forEach((btn, idx) => {
                 btn.disabled = true;
                 if (idx === correct) {
@@ -15707,65 +15725,39 @@ let timeLeft = 15;
                 }
             });
 
+            // यदि उत्तर सही है तो स्कोर बढ़ाएं
+            if (selected === correct) {
+                score++;
+            }
+
             const expBox = document.getElementById('explanationBox');
             if (expBox) {
                 expBox.innerText = exp;
                 expBox.style.display = 'block';
             }
-        }
 
-          
-
-        function startTimer() {
-            timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    autoNext();
-                }
-            }, 1000);
-        }
-
-        function checkAnswer(selected, correct, exp) {
-            clearInterval(timer);
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons[selected].classList.add(selected === correct ? 'correct' : 'wrong');
-            buttons[correct].classList.add('correct');
-
-            const expBox = document.getElementById('explanationBox');
-            expBox.innerHTML = `<strong>स्पष्टीकरण / Explanation:</strong> ${exp}`;
-            expBox.style.display = 'block';
-
+            // 2 सेकंड के बाद अपने आप अगले प्रश्न पर बढ़ेगा
             setTimeout(() => {
                 currentQIndex++;
                 displayQuestion();
-            }, 3500);
+            }, 2000);
         }
 
-        function autoNext() {
-            currentQIndex++;
-            displayQuestion();
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const btn = document.getElementById('darkModeBtn');
-            if (document.body.classList.contains('dark-mode')) {
-                btn.innerHTML = '☀️ लाइट मोड';
-                localStorage.setItem('science_theme', 'dark');
-            } else {
-                btn.innerHTML = '🌙 डार्क मोड';
-                localStorage.setItem('science_theme', 'light');
+        // क्विज़ समाप्त होने पर स्कोर कार्ड दिखाने का फंक्शन
+        function showQuizResult(totalQ) {
+            clearInterval(timer);
+            const quizView = document.getElementById('quizView');
+            if (quizView) {
+                quizView.innerHTML = `
+                    <div style="text-align: center; padding: 40px; font-family: sans-serif; background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 500px; margin: 40px auto;">
+                        <h2 style="color: #333;">🎉 क्विज़ समाप्त! (Quiz Completed)</h2>
+                        <p style="font-size: 18px; margin: 20px 0; color: #555;">आपका कुल स्कोर: <b style="color: #2196F3;">${score} / ${totalQ}</b></p>
+                        <button onclick="location.reload()" style="background: #4CAF50; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">दुबारा खेलें (Play Again)</button>
+                    </div>
+                `;
             }
+            score = 0; // स्कोर रीसेट करें
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('science_theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                const btn = document.getElementById('darkModeBtn');
-                if (btn) btn.innerHTML = '☀️ लाइट मोड';
-            }
         });
     </script>
 </body>
