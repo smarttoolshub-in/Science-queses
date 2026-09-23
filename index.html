@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="hi">
+< lang="hi">
 <head>
-    <meta name="google-site-verification" content="xEymZ9ThRS4rpYEuodRwBhJD_bkIungjJ3YdxQGOmm0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Science Hub - Bilingual All Chapters & Quiz</title>
@@ -178,6 +177,7 @@
             flex-direction: column;
             gap: 10px;
             margin-bottom: 20px;
+   
         }
         .option-btn {
             padding: 12px 15px;
@@ -232,10 +232,10 @@
         <div class="nav-links">
             <button onclick="toggleDarkMode()" id="darkModeBtn" class="header-btn" style="background: #334155;">🌙 डार्क मोड</button>
             <a href="https://smarttoolshub-in.github.io/Queses./" target="_blank" class="header-btn" style="background: #4f46e5;">🧠 Reasoning</a>
-            <a href="https://smarttoolshub-in.github.io/Queses/" target="_blank" class="header-btn math-btn">📚 Math Hub ➔</a>
-            <a href="https://smarttoolshub-in.github.io/SMART-TOOL/" target="_blank" class="header-btn calc-btn">⚡ Calculators ➔</a>
-            <a href="https://smarttoolshub-in.github.io/doctool/" target="_blank" class="header-btn tool-btn">🛠️ DocTools ➔</a>
-            </div>
+            <a href="#" target="_blank" class="header-btn" style="background: #0d9488;">📐 Math Hub</a>
+            <a href="#" target="_blank" class="header-btn" style="background: #d97706;">🧮 Calculators</a>
+            <a href="#" target="_blank" class="header-btn" style="background: #dc2626;">📄 PDF Tools</a>
+        </div>
     </header>
 
     <div class="container">
@@ -277,26 +277,33 @@
             <div class="chapters-list" id="chaptersListContainer"></div>
         </div>
 
-        <!-- 3. क्विज़ व्यू -->
-        <div id="quizView" class="view-section">
-            <button class="back-btn" onclick="backToChapters()">⬅ चैप्टर्स पर वापस जाएं / Back to Chapters</button>
-            <div class="quiz-card">
-                <div class="quiz-header">
-                    <span class="badge" id="chapterBadge">चैप्टर नाम</span>
-                    <span class="timer" id="timer">⏱️ 15s</span>
-                </div>
-                <div class="question-text" id="questionText">प्रश्न लोड हो रहा है...</div>
-                <div class="options-list" id="optionsList"></div>
-                <div class="explanation" id="explanationBox"></div>
+           <!-- क्विज़ व्यू -->
+    <div id="quizView" class="view-section">
+        <button class="back-btn" onclick="backToChapters()">⬅️ चैप्टर्स पर वापस जाएं</button>
+        <div class="quiz-card">
+            <div class="quiz-header">
+                <span id="chapterBadge">चैप्टर नाम</span>
+                <span id="timer">15s</span>
+            </div>
+            <div id="questionText">प्रश्न लोड हो रहा है...</div>
+            <div id="optionsList" class="options-list"></div>
+            <div id="explanationBox" style="display: none;"></div>
+
+            <!-- नेविगेशन बटन (पिछला और अगला) - एकदम सही जगह पर -->
+            <div id="navButtonsContainer" style="display: flex; justify-content: space-between; margin-top: 20px; position: relative; z-index: 9999;">
+                <button id="prevBtn"prevQuestion()" style="padding: 12px 24px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">⬅️ पिछला (Prev)</button>
+                <button id="nextBtn"nextQuestion()" style="padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">अगला (Next) ➡️</button>
             </div>
         </div>
     </div>
-
-    <footer>
+      
+      <footer>
         <p>SmartToolsHub - आपका अपना स्मार्ट टूल पोर्टल</p>
         <p><a href="#">About Us</a> • <a href="#">Privacy Policy</a> • <a href="#">Contact</a></p>
         <p style="font-size: 12px; color: #64748b;">© 2026 SmartToolsHub. सर्वाधिकार सुरक्षित।</p>
-    </footer>
+      </footer>
+      
+       
 
     <script>
         const scienceHubData = {
@@ -15593,75 +15600,95 @@
     }
 };
 
-let currentSubjectKey = '';
-let currentChapterKey = '';
-let currentQIndex = 0;
-let timer;
-let timeLeft = 15;
+              currentSubjectKey = '';
+        currentChapterKey = '';
+        currentQIndex = 0;
+        let timer;
+        let timeLeft = 15;
+        let score = 0;
+        let userChoices = {}; // यूजर के दिए गए उत्तरों को याद रखने के लिए
 
         function goHome() {
             clearInterval(timer);
-            document.getElementById('subjectsView').classList.add('active');
-            document.getElementById('chaptersView').classList.remove('active');
-            document.getElementById('quizView').classList.remove('active');
+            const subjectsView = document.getElementById('subjectsView');
+            const chaptersView = document.getElementById('chaptersView');
+            const quizView = document.getElementById('quizView');
+            if(subjectsView) subjectsView.classList.add('active');
+            if(chaptersView) chaptersView.classList.remove('active');
+            if(quizView) quizView.classList.remove('active');
         }
 
         function openSubject(subjectKey) {
             currentSubjectKey = subjectKey;
             const subData = scienceHubData[subjectKey];
-            document.getElementById('subjectTitle').innerText = subData.title;
-            
-            const listContainer = document.getElementById('chaptersListContainer');
-            listContainer.innerHTML = '';
+            const subTitle = document.getElementById('subjectTitle');
+            if(subTitle) subTitle.innerText = subData.title;
 
-            for (let chKey in subData.chapters) {
-                const ch = subData.chapters[chKey];
-                const qCount = ch.questions ? ch.questions.length : 0;
-                const btn = document.createElement('div');
-                btn.className = 'chapter-item';
-                btn.innerHTML = `<span>${ch.name}</span> <span style="font-size: 13px; color: #64748b; font-weight: normal;">(${qCount} Questions) ➔</span>`;
-                btn.onclick = () => openChapter(chKey);
-                listContainer.appendChild(btn);
+            const listContainer = document.getElementById('chaptersListContainer');
+            if(listContainer) {
+                listContainer.innerHTML = '';
+
+                for (let chKey in subData.chapters) {
+                    const ch = subData.chapters[chKey];
+                    const qCount = ch.questions ? ch.questions.length : 0;
+                    const btn = document.createElement('div');
+                    btn.className = 'chapter-item';
+                    btn.innerHTML = `<span>${ch.name}</span> <span style="font-size: 13px; color: #64748b; font-weight: normal;">(${qCount} प्रश्न)</span>`;
+                    btn.onclick = () => openChapter(subjectKey, chKey);
+                    listContainer.appendChild(btn);
+                }
             }
 
-            document.getElementById('subjectsView').classList.remove('active');
-            document.getElementById('chaptersView').classList.add('active');
-            document.getElementById('quizView').classList.remove('active');
+            const subjectsView = document.getElementById('subjectsView');
+            const chaptersView = document.getElementById('chaptersView');
+            const quizView = document.getElementById('quizView');
+            if(subjectsView) subjectsView.classList.remove('active');
+            if(chaptersView) chaptersView.classList.add('active');
+            if(quizView) quizView.classList.remove('active');
+        }
+
+        function openChapter(subKey, chKey) {
+            currentSubjectKey = subKey;
+            currentChapterKey = chKey;
+            currentQIndex = 0;
+            score = 0;
+            userChoices = {};
+
+            const chaptersView = document.getElementById('chaptersView');
+            const quizView = document.getElementById('quizView');
+            if(chaptersView) chaptersView.style.display = 'none';
+            if(quizView) quizView.style.display = 'block';
+            
+            displayQuestion();
         }
 
         function backToChapters() {
             clearInterval(timer);
-            openSubject(currentSubjectKey);
+            const quizView = document.getElementById('quizView');
+            const chaptersView = document.getElementById('chaptersView');
+            if(quizView) quizView.style.display = 'none';
+            if(chaptersView) chaptersView.style.display = 'block';
         }
-
-        function openChapter(chKey) {
-            currentChapterKey = chKey;
-            currentQIndex = 0;
-
-            document.getElementById('chaptersView').classList.remove('active');
-            document.getElementById('quizView').classList.add('active');
-            displayQuestion();
-        }        let score = 0; // स्कोर ट्रैक करने के लिए
 
         function displayQuestion() {
             clearInterval(timer);
             timeLeft = 15;
-            document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
+            const timerEl = document.getElementById('timer');
+            if(timerEl) timerEl.innerText = `⏱️ ${timeLeft}s`;
 
             const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
             
-            // अगर सारे प्रश्न खत्म हो गए हैं, तो रिजल्ट / स्कोर दिखाएं
             if (currentQIndex >= chapterData.questions.length) {
                 showQuizResult(chapterData.questions.length);
                 return;
             }
 
-            // प्रश्न की नंबरिंग दिखाने के लिए (जैसे: प्रश्न 1 / 50)
-            document.getElementById('chapterBadge').innerText = `${chapterData.name} (प्रश्‍न ${currentQIndex + 1} / ${chapterData.questions.length})`;
+            const badge = document.getElementById('chapterBadge');
+            if(badge) badge.innerText = `${chapterData.name} (प्रश्‍न ${currentQIndex + 1} / ${chapterData.questions.length})`;
 
             const qData = chapterData.questions[currentQIndex];
 
-            // विकल्पों को रैंडम (शफल) करने का लॉजिक ताकि सही उत्तर हमेशा पहले नंबर पर न रहे
+            // विकल्पों को शफल करने का लॉजिक
             let combined = qData.options.map((opt, i) => ({ text: opt, isCorrect: i === qData.answer }));
             for (let i = combined.length - 1; i > 0; i--) {
                 let j = Math.floor(Math.random() * (i + 1));
@@ -15670,52 +15697,87 @@ let timeLeft = 15;
             let shuffledOptions = combined.map(item => item.text);
             let shuffledAnswer = combined.findIndex(item => item.isCorrect);
 
-            document.getElementById('questionText').innerText = `Q. ${qData.q}`;
+            const qText = document.getElementById('questionText');
+            if(qText) qText.innerText = `Q. ${qData.q}`;
 
             const optionsList = document.getElementById('optionsList');
-            optionsList.innerHTML = '';
+            if(optionsList) {
+                optionsList.innerHTML = '';
+                const savedChoice = userChoices[currentQIndex];
 
-            shuffledOptions.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerText = opt;
-                // डबल क्लिक या बार-बार क्लिक से बचाने के लिए चेक
-                btn.onclick = () => {
-                    if (btn.disabled) return; // यदि पहले ही क्लिक हो चुका है तो रोक दें
-                    checkAnswer(idx, shuffledAnswer, qData.exp);
-                };
-                optionsList.appendChild(btn);
-            });
+                shuffledOptions.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = opt;
+
+                    if (savedChoice !== undefined) {
+                        btn.disabled = true;
+                        if (idx === shuffledAnswer) {
+                            btn.classList.add('correct');
+                        } else if (idx === savedChoice) {
+                            btn.classList.add('wrong');
+                        }
+                    } else {
+                        btn.onclick = () => {
+                            if (btn.disabled) return;
+                            userChoices[currentQIndex] = idx;
+                            checkAnswer(idx, shuffledAnswer, qData.exp);
+                        };
+                    }
+                    optionsList.appendChild(btn);
+                });
+            }
 
             const expBox = document.getElementById('explanationBox');
             if (expBox) {
-                expBox.style.display = 'none';
+                if (userChoices[currentQIndex] !== undefined) {
+                    expBox.innerText = qData.exp;
+                    expBox.style.display = 'block';
+                } else {
+                    expBox.style.display = 'none';
+                }
+            }
+
+            const prevBtn = document.getElementById('prevBtn');
+            if (prevBtn) {
+                if (currentQIndex === 0) {
+                    prevBtn.disabled = true;
+                    prevBtn.style.opacity = "0.5";
+                    prevBtn.style.cursor = "not-allowed";
+                } else {
+                    prevBtn.disabled = false;
+                    prevBtn.style.opacity = "1";
+                    prevBtn.style.cursor = "pointer";
+                }
             }
             
-            startTimer();
+            if (userChoices[currentQIndex] === undefined) {
+                startTimer();
+            }
         }
 
         function startTimer() {
             timer = setInterval(() => {
                 timeLeft--;
-                document.getElementById('timer').innerText = `⏱️ ${timeLeft}s`;
+                const timerEl = document.getElementById('timer');
+                if(timerEl) timerEl.innerText = `⏱️ ${timeLeft}s`;
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    autoNext();
+                    const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
+                    if (currentQIndex < chapterData.questions.length - 1) {
+                        currentQIndex++;
+                        displayQuestion();
+                    } else {
+                        showQuizResult(chapterData.questions.length);
+                    }
                 }
             }, 1000);
-        }
-
-        function autoNext() {
-            currentQIndex++;
-            displayQuestion();
         }
 
         function checkAnswer(selected, correct, exp) {
             clearInterval(timer);
             const buttons = document.querySelectorAll('.option-btn');
             
-            // तुरंत सभी बटन्स को डिसएबल कर दें ताकि डबल-क्लिक या हैंग होने की समस्या खत्म हो जाए
             buttons.forEach((btn, idx) => {
                 btn.disabled = true;
                 if (idx === correct) {
@@ -15725,7 +15787,6 @@ let timeLeft = 15;
                 }
             });
 
-            // यदि उत्तर सही है तो स्कोर बढ़ाएं
             if (selected === correct) {
                 score++;
             }
@@ -15735,30 +15796,37 @@ let timeLeft = 15;
                 expBox.innerText = exp;
                 expBox.style.display = 'block';
             }
-
-            // 2 सेकंड के बाद अपने आप अगले प्रश्न पर बढ़ेगा
-            setTimeout(() => {
-                currentQIndex++;
-                displayQuestion();
-            }, 2000);
         }
 
-        // क्विज़ समाप्त होने पर स्कोर कार्ड दिखाने का फंक्शन
         function showQuizResult(totalQ) {
             clearInterval(timer);
-            const quizView = document.getElementById('quizView');
-            if (quizView) {
-                quizView.innerHTML = `
-                    <div style="text-align: center; padding: 40px; font-family: sans-serif; background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); max-width: 500px; margin: 40px auto;">
-                        <h2 style="color: #333;">🎉 क्विज़ समाप्त! (Quiz Completed)</h2>
-                        <p style="font-size: 18px; margin: 20px 0; color: #555;">आपका कुल स्कोर: <b style="color: #2196F3;">${score} / ${totalQ}</b></p>
-                        <button onclick="location.reload()" style="background: #4CAF50; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 5px; cursor: pointer; font-weight: bold;">दुबारा खेलें (Play Again)</button>
-                    </div>
-                `;
-            }
-            score = 0; // स्कोर रीसेट करें
+            alert(`🎉 क्विज़ समाप्त!\nआपका कुल स्कोर: ${score} / ${totalQ}`);
+            score = 0;
+            currentQIndex = 0;
+            userChoices = {};
+            backToChapters();
         }
+
+        // नेविगेशन बटन्स के लिए इवेंट लिसनर्स
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            clearInterval(timer);
+            const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
+            if (currentQIndex < chapterData.questions.length - 1) {
+                currentQIndex++;
+                displayQuestion();
+            } else {
+                showQuizResult(chapterData.questions.length);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            clearInterval(timer);
+            if (currentQIndex > 0) {
+                currentQIndex--;
+                displayQuestion();
+            }
         });
     </script>
 </body>
-</html>
+</html>                          
+            
