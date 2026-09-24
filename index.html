@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-< lang="hi">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Science Hub - Bilingual All Chapters & Quiz</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f4f7f6;
@@ -15,6 +20,7 @@
             min-height: 100vh;
             transition: background 0.3s, color 0.3s;
         }
+          
         body.dark-mode {
             background-color: #0f172a;
             color: #f8fafc;
@@ -177,7 +183,6 @@
             flex-direction: column;
             gap: 10px;
             margin-bottom: 20px;
-   
         }
         .option-btn {
             padding: 12px 15px;
@@ -218,23 +223,22 @@
             padding: 20px 15px;
             margin-top: auto;
             border-top: 1px solid #1e293b;
+            width: 100%;
         }
         footer p { margin: 0 0 6px 0; font-size: 14px; }
         footer a { color: #94a3b8; text-decoration: none; margin: 0 6px; }
     </style>
 </head>
-<body>
-
-    <header>
+  <header>
         <div class="logo" onclick="goHome()">
             🔬 Smart Science Hub
         </div>
         <div class="nav-links">
             <button onclick="toggleDarkMode()" id="darkModeBtn" class="header-btn" style="background: #334155;">🌙 डार्क मोड</button>
             <a href="https://smarttoolshub-in.github.io/Queses./" target="_blank" class="header-btn" style="background: #4f46e5;">🧠 Reasoning</a>
-            <a href="#" target="_blank" class="header-btn" style="background: #0d9488;">📐 Math Hub</a>
-            <a href="#" target="_blank" class="header-btn" style="background: #d97706;">🧮 Calculators</a>
-            <a href="#" target="_blank" class="header-btn" style="background: #dc2626;">📄 PDF Tools</a>
+            <a href="https://smarttoolshub-in.github.io/Queses/" target="_blank" class="header-btn" style="background: #0d9488;">📐 Math Hub</a>
+            <a href="https://smarttoolshub-in.github.io/SMART-TOOL/" target="_blank" class="header-btn" style="background: #d97706;">🧮 Calculators</a>
+            <a href="https://smarttoolshub-in.github.io/doctool/" target="_blank" class="header-btn" style="background: #dc2626;">📄 PDF Tools</a>
         </div>
     </header>
 
@@ -277,35 +281,35 @@
             <div class="chapters-list" id="chaptersListContainer"></div>
         </div>
 
-           <!-- क्विज़ व्यू -->
-    <div id="quizView" class="view-section">
-        <button class="back-btn" onclick="backToChapters()">⬅️ चैप्टर्स पर वापस जाएं</button>
-        <div class="quiz-card">
-            <div class="quiz-header">
-                <span id="chapterBadge">चैप्टर नाम</span>
-                <span id="timer">15s</span>
-            </div>
-            <div id="questionText">प्रश्न लोड हो रहा है...</div>
-            <div id="optionsList" class="options-list"></div>
-            <div id="explanationBox" style="display: none;"></div>
+        <!-- 3. क्विज़ व्यू -->
+        <div id="quizView" class="view-section">
+            <button class="back-btn" onclick="backToChapters()">⬅️ चैप्टर्स पर वापस जाएं</button>
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <span id="chapterBadge" class="badge">चैप्टर नाम</span>
+                    <span id="timer" class="timer">15s</span>
+                </div>
+                <div id="questionText" class="question-text">प्रश्न लोड हो रहा है...</div>
+                <div id="optionsList" class="options-list"></div>
+                <div id="explanationBox" class="explanation"></div>
 
-            <!-- नेविगेशन बटन (पिछला और अगला) - एकदम सही जगह पर -->
-            <div id="navButtonsContainer" style="display: flex; justify-content: space-between; margin-top: 20px; position: relative; z-index: 9999;">
-                <button id="prevBtn"prevQuestion()" style="padding: 12px 24px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">⬅️ पिछला (Prev)</button>
-                <button id="nextBtn"nextQuestion()" style="padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">अगला (Next) ➡️</button>
+                <!-- नेविगेशन बटन (पिछला और अगला) -->
+                <div id="navButtonsContainer" style="display: flex; justify-content: space-between; margin-top: 20px; position: relative; z-index: 99;">
+                    <button id="prevBtn" onclick="prevQuestion()" style="padding: 12px 24px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">⬅️ पिछला (Prev)</button>
+                    <button id="nextBtn" onclick="nextQuestion()" style="padding: 12px 24px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 15px;">अगला (Next) ➡️</button>
+                </div>
             </div>
         </div>
     </div>
-      
-      <footer>
-        <p>SmartToolsHub - आपका अपना स्मार्ट टूल पोर्टल</p>
-        <p><a href="#">About Us</a> • <a href="#">Privacy Policy</a> • <a href="#">Contact</a></p>
-        <p style="font-size: 12px; color: #64748b;">© 2026 SmartToolsHub. सर्वाधिकार सुरक्षित।</p>
-      </footer>
-      
-       
+    
+    <footer>
+        <p>SmartToolHub - आपका अपना स्मार्ट टूल पोर्टल</p>
+        <p><a href="#">About Us</a> · <a href="#">Privacy Policy</a> · <a href="#">Contact</a></p>
+        <p style="font-size: 12px; color: #64748b;">© 2026 SmartToolHub. सर्वाधिकार सुरक्षित।</p>
+    </footer>
 
     <script>
+        
         const scienceHubData = {
             physics: {
                 title: "Physics (भौतिकी) - चैप्टर्स / Chapters",
@@ -3790,6 +3794,156 @@
         options: ["6.022 × 10²³", "3 × 10⁸", "6.67 × 10⁻¹¹", "1.6 × 10⁻¹⁹"],
         answer: 0,
         exp: "एक मोल पदार्थ में कणों की संख्या 6.022 × 10²³ होती है। / Avogadro number is 6.022 × 10²³."
+    },  
+    {
+        q: "What is the nature of the intermolecular force in solids? / ठोस पदार्थों में अंतर-आणविक बल की प्रकृति कैसी होती है?",
+        options: ["Very weak / बहुत कमजोर", "Maximum / अधिकतम", "Zero / शून्य", "Moderate / मध्यम"],
+        answer: 1,
+        exp: "Intermolecular forces are maximum in solids, which keeps their particles tightly bound. / ठोस पदार्थों में अंतर-आणविक बल अधिकतम होता है, जो उनके कणों को कसकर बांधे रखता है।"
+    },
+    {
+        q: "What is the process of conversion of solid directly into gas called? / ठोस का सीधे गैस में परिवर्तन क्या कहलाता है?",
+        options: ["Evaporation / वाष्पीकरण", "Sublimation / ऊर्ध्वपातन", "Condensation / संघनन", "Melting / गलन"],
+        answer: 1,
+        exp: "Sublimation is the transition of a substance directly from solid to gas without becoming liquid (e.g., Camphor, Dry Ice). / ऊर्ध्वपातन वह प्रक्रिया है जिसमें ठोस सीधे गैस में बदल जाता है जैसे कपूर या शुष्क बर्फ।"
+    },
+    {
+        q: "What is Solid Carbon Dioxide (CO2) commonly known as? / ठोस कार्बन डाइऑक्साइड (CO2) को आमतौर पर किस रूप में जाना जाता है?",
+        options: ["Quick silver / क्विक सिल्वर", "Dry Ice / शुष्क बर्फ", "Heavy water / भारी पानी", "Green vitriol / हरा कसीस"],
+        answer: 1,
+        exp: "Solid CO2 is called Dry Ice because it directly converts into gas without melting into liquid. / ठोस CO2 को शुष्क बर्फ कहा जाता है क्योंकि यह बिना द्रव में बदले सीधे गैस बन जाती है।"
+    },
+    {
+        q: "What is the melting point of ice on the Kelvin scale? / केल्विन पैमाने पर बर्फ का गलनांक कितना होता है?",
+        options: ["0 K", "100 K", "273.15 K", "373.15 K"],
+        answer: 2,
+        exp: "The melting point of ice is 0°C, which is equal to 273.15 K. / बर्फ का गलनांक 0°C होता है, जो 273.15 केल्विन के बराबर है।"
+    },
+    {
+        q: "What is the boiling point of water in Celsius? / सेल्सियस में पानी का क्वथनांक कितना होता है?",
+        options: ["0°C", "50°C", "100°C", "273°C"],
+        answer: 2,
+        exp: "Water boils at 100°C at standard atmospheric pressure. / मानक वायुमंडलीय दाब पर पानी 100°C पर उबलता है।"
+    },
+    {
+        q: "Which state of matter has the highest kinetic energy among particles? / कणों के बीच किस अवस्था में गतिज ऊर्जा सबसे अधिक होती है?",
+        options: ["Solid / ठोस", "Liquid / द्रव", "Gas / गैस", "Plasma / प्लाज्मा"],
+        answer: 2,
+        exp: "Gaseous particles have maximum freedom of movement, hence highest kinetic energy. / गैसीय कणों की गति सबसे तेज होती है, इसलिए उनमें गतिज ऊर्जा सर्वाधिक होती है।"
+    },
+    {
+        q: "What phenomenon occurs during evaporation? / वाष्पीकरण के दौरान कौन सी घटना होती है?",
+        options: ["Heating / गर्मी उत्पन्न होती है", "Cooling / ठंडक उत्पन्न होती है", "No temperature change / तापमान स्थिर रहता है", "Pressure increases / दाब बढ़ता है"],
+        answer: 1,
+        exp: "Evaporation causes cooling because particles absorb energy from the surroundings to vaporize. / वाष्पीकरण से ठंडक होती है क्योंकि कण आसपास से ऊर्जा अवशोषित करते हैं।"
+    },
+    {
+        q: "What is the fourth state of matter? / पदार्थ की चौथी अवस्था कौन सी है?",
+        options: ["Bose-Einstein Condensate / बोस-आइंस्टीन कंडेनसेट", "Plasma / प्लाज्मा", "Gas / गैस", "Liquid / द्रव"],
+        answer: 1,
+        exp: "Plasma consists of super energetic and super excited ionized particles, known as the fourth state. / प्लाज्मा में अत्यधिक ऊर्जावान और उत्तेजित आयन होते हैं, इसे चौथी अवस्था कहते हैं।"
+    },
+    {
+        q: "Which state of matter is found in stars and the sun? / तारों और सूर्य में पदार्थ की कौन सी अवस्था पाई जाती है?",
+        options: ["Solid / ठोस", "Liquid / द्रव", "Gas / गैस", "Plasma / प्लाज्मा"],
+        answer: 3,
+        exp: "Due to high temperature, gases in stars and the sun get ionized, forming plasma. / उच्च तापमान के कारण सूर्य और तारों में गैसें आयनित होकर प्लाज्मा बनाती हैं।"
+    },
+    {
+        q: "Who predicted the fifth state of matter (Bose-Einstein Condensate)? / पदार्थ की पाँचवीं अवस्था (BEC) की भविष्यवाणी किसने की थी?",
+        options: ["Albert Einstein / अल्बर्ट आइंस्टीन", "Satyendra Nath Bose / सत्येंद्र नाथ बोस", "Both A and B / दोनों ए और बी", "J.J. Thomson / जे.जे. थॉमस"],
+        answer: 2,
+        exp: "S.N. Bose did initial calculations, and Albert Einstein predicted the fifth state in 1924. / एस.एन. बोस की गणना के आधार पर आइंस्टीन ने 1924 में इसकी भविष्यवाणी की थी।"
+    },
+    {
+        q: "What is the main component of Liquefied Petroleum Gas (LPG)? / द्रویकृत पेट्रोलियम गैस (LPG) का मुख्य घटक क्या है?",
+        options: ["Methane / मीथेन", "Butane and Propane / ब्यूटेन और प्रोपेन", "Ethane / एथेन", "Propane only / केवल प्रोपेन"],
+        answer: 1,
+        exp: "LPG mainly consists of butane and propane gases compressed into liquid form. / एलपीजी मुख्य रूप से ब्यूटेन और प्रोपेन गैसों का मिश्रण है।"
+    },
+    {
+        q: "What is the main component of Compressed Natural Gas (CNG)? / संपीड़ित प्राकृतिक गैस (CNG) का मुख्य घटक क्या है?",
+        options: ["Methane / मीथेन", "Butane / ब्यूटेन", "Propane / प्रोपेन", "Ethane / एथेन"],
+        answer: 0,
+        exp: "CNG consists mostly of methane (CH4) stored at high pressure. / सीएनजी में मुख्य रूप से मीथेन गैस होती है।"
+    },
+    {
+        q: "At what temperature do Celsius and Fahrenheit scales show the same reading? / किस तापमान पर सेल्सियस और फारेनहाइट पैमाने समान मान दर्शाते हैं?",
+        options: ["0°", "-40°", "100°", "-273°"],
+        answer: 1,
+        exp: "At -40 degrees, both Celsius and Fahrenheit scales show the exact same numerical value. / -40 डिग्री पर सेल्सियस और फारेनहाइट दोनों का मान समान होता है।"
+    },
+    {
+        q: "What is the process of a liquid changing into a solid called? / द्रव का ठोस में बदलने की प्रक्रिया को क्या कहते हैं?",
+        options: ["Melting / गलन", "Freezing / हिमीकरण (जमना)", "Vaporization / वाष्पीकरण", "Sublimation / ऊर्ध्वपातन"],
+        answer: 1,
+        exp: "Freezing is the phase transition where a liquid turns into a solid when cooled. / जब कोई द्रव ठंडा होकर ठोस बनता है तो उसे हिमीकरण कहते हैं।"
+    },
+    {
+        q: "What is mass per unit volume called? / इकाई आयतन के द्रव्यमान को क्या कहते हैं?",
+        options: ["Density / घनत्व", "Pressure / दाब", "Viscosity / श्यानता", "Volume / आयतन"],
+        answer: 0,
+        exp: "Density = Mass / Volume. Its SI unit is kg/m³. / घनत्व बराबर द्रव्यमान बटे आयतन होता है। इसकी इकाई kg/m³ है।"
+    },
+    {
+        q: "Which property allows gases to fill their container completely? / किस गुण के कारण गैसें अपने बर्तन को पूरी तरह भर लेती हैं?",
+        options: ["High compressibility / उच्च संपीड्यता", "Rigidity / दृढ़ता", "Fixed volume /निश्चित आयतन", "High density / उच्च घनत्व"],
+        answer: 0,
+        exp: "Due to high compressibility and low intermolecular forces, gases fill any available space. / उच्च संपीड्यता के कारण गैसें उपलब्ध पूरे बर्तन को भर लेती हैं।"
+    },
+    {
+        q: "What is the SI unit of pressure? / दाब की एसआई (SI) इकाई क्या है?",
+        options: ["Newton / न्यूटन", "Pascal / पास्कल", "Joule / जूल", "Watt / वाट"],
+        answer: 1,
+        exp: "Pressure is measured in Pascals (Pa) or N/m². / दाब को पास्कल (Pa) में मापा जाता है।"
+    },
+    {
+        q: "What happens to the rate of diffusion when temperature increases? / तापमान बढ़ाने पर विसरण (Diffusion) की दर पर क्या प्रभाव पड़ता है?",
+        options: ["Decreases / घटती है", "Increases / बढ़ती है", "Remains unchanged / अपरिवर्तित रहती है", "Becomes zero / शून्य हो जाती है"],
+        answer: 1,
+        exp: "Higher temperature increases kinetic energy, which speeds up diffusion. / तापमान बढ़ने से कणों की गति बढ़ती है जिससे विसरण तेज हो जाता है।"
+    },
+    {
+        q: "Which of the following is NOT a matter? / निम्नलिखित में से क्या पदार्थ नहीं है?",
+        options: ["Chair / कुर्सी", "Water / पानी", "Love / स्नेह (प्यार)", "Air / हवा"],
+        answer: 2,
+        exp: "Emotions like love, hate, or thoughts are feelings, not physical matter with mass and volume. / प्यार, विचार या भावनाएं भौतिक पदार्थ नहीं हैं।"
+    },
+    {
+        q: "What is latent heat of vaporization? / वाष्पीकरण की गुप्त ऊष्मा क्या है?",
+        options: ["Heat required to melt solid / ठोस को पिघलाने की ऊष्मा", "Heat required to convert liquid to gas at boiling point / क्वथनांक पर द्रव को गैस में बदलने की ऊष्मा", "Heat to cool water / पानी ठंडा करने की ऊष्मा", "None of the above / इनमें से कोई नहीं"],
+        answer: 1,
+        exp: "It is the heat energy required to change 1 kg of liquid to gas at atmospheric pressure at its boiling point. / यह वह ऊष्मा है जो 1 किग्रा द्रव को गैस में बदलती है।"
+    },
+    {
+        q: "In which state of matter are particles arranged in a definite geometric pattern? / किस अवस्था में कण एक निश्चित ज्यामितीय पैटर्न में व्यवस्थित होते हैं?",
+        options: ["Solid / ठोस", "Liquid / द्रव", "Gas / गैस", "Plasma / प्लाज्मा"],
+        answer: 0,
+        exp: "Solids have a definite structure and crystal lattice arrangement. / ठोस पदार्थों की एक निश्चित संरचना और जालक व्यवस्था होती है।"
+    },
+    {
+        q: "Why can gases be compressed easily? / गैसों को आसानी से संपीड़ित (Compress) क्यों किया जा सकता है?",
+        options: ["Large intermolecular spaces / बड़े अंतर-आणविक स्थान", "Strong forces / मजबूत बल", "Fixed shape / निश्चित आकार", "High weight / अधिक वजन"],
+        answer: 0,
+        exp: "Gases have large spaces between molecules, allowing them to be compressed under pressure. / अणुओं के बीच की खाली जगह बहुत अधिक होने के कारण इन्हें दबाया जा सकता है।"
+    },
+    {
+        q: "What is the physical state of water at 250°C? / 250°C तापमान पर पानी की भौतिक अवस्था क्या होगी?",
+        options: ["Solid / ठोस", "Liquid / द्रव", "Gas (Steam) / गैस (वाष्प)", "Plasma / प्लाज्मा"],
+        answer: 2,
+        exp: "Since 250°C is well above the boiling point (100°C), water exists as steam (gas). / 100°C से ऊपर होने के कारण इस तापमान पर पानी गैस या वाष्प के रूप में रहेगा।"
+    },
+    {
+        q: "What is the process of gas turning directly into solid called? / गैस का सीधे ठोस में बदलना क्या कहलाता है?",
+        options: ["Deposition / निक्षेप (डिपोजिशन)", "Condensation / संघनन", "Melting / गलन", "Evaporation / वाष्पीकरण"],
+        answer: 0,
+        exp: "Deposition is a thermodynamic process where gas transforms directly into solid (reverse of sublimation). / गैस का सीधे ठोस में बदलना निक्षेप कहलाता है।"
+    },
+    {
+        q: "What causes the smell of hot sizzling food to reach us several meters away? / गर्म खाने की खुशबू दूर तक किस प्रक्रिया से पहुँचती है?",
+        options: ["Diffusion / विसरण", "Compression / संपीडन", "Melting / गलन", "Reflection / परावर्तन"],
+        answer: 0,
+        exp: "Diffusion of aroma particles into the air allows the smell to travel fast. / खुशबू के कण हवा में विसरित होकर तेजी से फैल जाते हैं।"
     }
 ]},
                   c2: { name: "2. परमाणु संरचना (Atomic Structure)", questions: [
@@ -15826,6 +15980,25 @@
                 displayQuestion();
             }
         });
+              // डार्क मोड को चालू और बंद करने का कोड
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        if (darkModeBtn) {
+            darkModeBtn.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                
+                // यह मोबाइल में याद रखेगा कि डार्क मोड ऑन है या नहीं
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+
+            // ऐप खोलते ही चेक करेगा कि पहले से डार्क मोड सेट था या नहीं
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+            }
+        }
     </script>
 </body>
 </html>                          
