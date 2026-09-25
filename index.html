@@ -201,6 +201,22 @@ body.dark-mode .option-btn.selected {
     border-color: #60a5fa !important;
     color: #ffffff !important;
 }
+        .back-btn {
+    background: #2563eb; /* आकर्षक नीला रंग */
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background 0.2s;
+}
+.back-btn:hover {
+    background: #1d4ed8;
+}
     </style>
 </head>
 <body>
@@ -15796,7 +15812,7 @@ body.dark-mode .option-btn.selected {
             window.history.pushState({ view: 'chapters', subject: subjectKey }, '', '');
         }
 
-        function openChapter(chapterObj) {
+                function openChapter(chapterObj) {
             currentChapterObj = chapterObj;
             currentQIndex = 0;
             userChoices = {};
@@ -15806,9 +15822,9 @@ body.dark-mode .option-btn.selected {
             document.getElementById('quizView').innerHTML = `
                 <button class="back-btn" onclick="backToChapters()">⬅ चैप्टर्स पर वापस जाएं / Back to Chapters</button>
                 <div class="quiz-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: #1e293b; padding: 10px 15px; border-radius: 8px; color: white;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: #2563eb; padding: 12px 16px; border-radius: 8px; color: white;">
                         <span id="chapterBadge" style="font-size: 14px; font-weight: bold;"></span>
-                        <span style="font-size: 12px; background: #3b82f6; padding: 3px 10px; border-radius: 12px; font-weight: bold;">साइंस परीक्षा मोड (Exam Mode)</span>
+                        <span style="font-size: 12px; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 12px; font-weight: bold;">साइंस परीक्षा मोड (Exam Mode)</span>
                     </div>
                     
                     <div id="paletteContainer" style="display: flex; flex-wrap: wrap; gap: 4px; margin: 10px 0; justify-content: center; padding: 8px; background: var(--card-bg, #f8fafc); border-radius: 8px; border: 1px solid #e2e8f0; max-height: 90px; overflow-y: auto;"></div>
@@ -15817,8 +15833,8 @@ body.dark-mode .option-btn.selected {
                     <div id="optionsList" class="options-container"></div>
                     
                     <div class="quiz-nav" style="display: flex; justify-content: space-between; margin-top: 25px;">
-                        <button onclick="prevQuestion()" class="option-btn" style="width: auto; background: #64748b; color: white;">पिछला</button>
-                        <button onclick="nextQuestion()" class="option-btn" id="nextSubmitBtn" style="width: auto; background: #2563eb; color: white;">अगला</button>
+                        <button onclick="prevQuestion()" class="back-btn" style="width: auto; margin-bottom: 0;">पिछला</button>
+                        <button onclick="nextQuestion()" class="option-btn" id="nextSubmitBtn" style="width: auto; background: #2563eb; color: white; margin-top: 0;">अगला</button>
                     </div>
                 </div>
             `;
