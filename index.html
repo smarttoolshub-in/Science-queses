@@ -187,6 +187,20 @@
         }
         footer p { margin: 0 0 6px 0; font-size: 14px; }
         footer a { color: #94a3b8; text-decoration: none; margin: 0 6px; }
+        /* जब किसी ऑप्शन पर क्लिक करके सेलेक्ट किया जाए, तो तुरंत नीला रंग दिखने के लिए */
+.option-btn.selected, 
+body.dark-mode .option-btn.selected {
+    background-color: #dbeafe !important;
+    border-color: #2563eb !important;
+    color: #0f172a !important;
+    font-weight: bold !important;
+}
+
+body.dark-mode .option-btn.selected {
+    background-color: #1e3a8a !important;
+    border-color: #60a5fa !important;
+    color: #ffffff !important;
+}
     </style>
 </head>
 <body>
@@ -15863,10 +15877,10 @@
         }
 
         function selectOption(selectedIdx) {
-            userChoices[currentQIndex] = selectedIdx;
+            userChoices[currentQIndex] = selectedIdx; // उत्तर सेव करें
             const isDark = document.body.classList.contains('dark-mode');
             
-            const buttons = document.querySelectorAll('.options-list .option-btn');
+            const buttons = document.querySelectorAll('.option-btn');
             buttons.forEach((b, idx) => {
                 if (idx === selectedIdx) {
                     b.style.background = isDark ? '#1e3a8a' : '#dbeafe';
@@ -15881,7 +15895,7 @@
                 }
             });
 
-            renderPalette();
+            renderPalette(); // पैलेट अपडेट करें
         }
 
         function renderPalette() {
