@@ -6,11 +6,6 @@
     <title>Smart Science Hub - Bilingual All Chapters & Quiz</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        html, body {
-            height: 100%;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f4f7f6;
@@ -20,7 +15,6 @@
             min-height: 100vh;
             transition: background 0.3s, color 0.3s;
         }
-          
         body.dark-mode {
             background-color: #0f172a;
             color: #f8fafc;
@@ -33,14 +27,6 @@
             background-color: #1e293b;
             color: #f8fafc;
             border-color: #334155;
-        }
-        body.dark-mode .option-btn {
-            background-color: #334155;
-            color: #f8fafc;
-            border-color: #475569;
-        }
-        body.dark-mode .option-btn:hover {
-            background-color: #475569;
         }
         header {
             background: #0b132b;
@@ -152,69 +138,44 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
-        .quiz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .badge {
-            background: #4f46e5;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-        }
-        .timer {
-            background: #ef4444;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .question-text {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        .options-list {
+        .options-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
-        }
-        .option-btn {
-            padding: 12px 15px;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            text-align: left;
-            font-size: 15px;
-            cursor: pointer;
-        }
-        .option-btn.correct {
-            background: #22c55e !important;
-            color: white;
-            border-color: #22c55e;
-        }
-        .option-btn.wrong {
-            background: #ef4444 !important;
-            color: white;
-            border-color: #ef4444;
-        }
-        .explanation {
-            background: #eff6ff;
-            border-left: 4px solid #3b82f6;
-            padding: 12px;
-            font-size: 14px;
-            border-radius: 4px;
-            display: none;
             margin-top: 15px;
         }
-        body.dark-mode .explanation {
+        .option-btn {
+            width: 100%;
+            padding: 12px 16px;
+            text-align: left;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+        body.dark-mode .option-btn {
             background: #1e293b;
-            color: #93c5fd;
+            color: #f8fafc;
+            border-color: #334155;
+        }
+        .option-btn.correct {
+            background-color: #22c55e !important;
+            color: white !important;
+            border-color: #16a34a !important;
+            font-weight: bold;
+        }
+        .option-btn.wrong {
+            background-color: #ef4444 !important;
+            color: white !important;
+            border-color: #dc2626 !important;
+            font-weight: bold;
+        }
+        body.quiz-mode .main-header, 
+        body.quiz-mode header, 
+        body.quiz-mode nav {
+            display: none !important;
         }
         footer {
             background-color: #0b132b;
@@ -223,24 +184,23 @@
             padding: 20px 15px;
             margin-top: auto;
             border-top: 1px solid #1e293b;
-            width: 100%;
         }
         footer p { margin: 0 0 6px 0; font-size: 14px; }
         footer a { color: #94a3b8; text-decoration: none; margin: 0 6px; }
     </style>
 </head>
-  <header>
+<body>
+
+    <header class="main-header">
         <div class="logo" onclick="goHome()">
             🔬 Smart Science Hub
         </div>
         <div class="nav-links">
             <button onclick="toggleDarkMode()" id="darkModeBtn" class="header-btn" style="background: #334155;">🌙 डार्क मोड</button>
             <a href="https://smarttoolshub-in.github.io/Queses./" target="_blank" class="header-btn" style="background: #4f46e5;">🧠 Reasoning</a>
-            <a href="https://smarttoolshub-in.github.io/Queses/" target="_blank" class="header-btn" style="background: #0d9488;">📐 Math Hub</a>
-            <a href="https://smarttoolshub-in.github.io/SMART-TOOL/" target="_blank" class="header-btn" style="background: #d97706;">🧮 Calculators</a>
-            <a href="https://smarttoolshub-in.github.io/doctool/" target="_blank" class="header-btn" style="background: #dc2626;">📄 PDF Tools</a>
-            <a href="https://smarttoolshub-in.github.io/Social-Science/" target="_blank" class="header-btn tool-btn">🎯 Smart Social Science Hub➔</a>     
-       
+            <a href="#" target="_blank" class="header-btn" style="background: #0d9488;">📐 Math Hub</a>
+            <a href="#" target="_blank" class="header-btn" style="background: #d97706;">🧮 Calculators</a>
+            <a href="#" target="_blank" class="header-btn" style="background: #dc2626;">📄 PDF Tools</a>
         </div>
     </header>
 
@@ -15749,259 +15709,363 @@
                                 options: ["सुपाठ्य (Readable), अच्छी तरह से कमेंट किया हुआ और कुशल कोड", "सबसे लंबा कोड", "बिना कमेंट का कोड", "जटिल कोड"],
                                 answer: 0,
                                 exp: "साफ-सुथरा और सुपाठ्य कोड आसानी से मेंटेन किया जा सकता है।"
+                            }
+                        ]
                     }
-                ]
-                                                      }   }
-        
-    }
-};
+                }
+             };
+        let currentSubjectKey = '';
+        let currentChapterObj = null;
+        let currentQIndex = 0;
+        let userChoices = {};
 
-              currentSubjectKey = '';
-        currentChapterKey = '';
-        currentQIndex = 0;
-        let timer;
-        let timeLeft = 30;
-        let score = 0;
-        let userChoices = {}; // यूजर के दिए गए उत्तरों को याद रखने के लिए
+        // पेज लोड होते ही हिस्ट्री सेट करें
+        window.history.replaceState({ view: 'home' }, '', '');
 
-        function goHome() {
-            clearInterval(timer);
+        // ब्राउज़र बैक बटन हैंडलर (History API)
+        window.addEventListener('popstate', function(event) {
+            const state = event.state;
             const subjectsView = document.getElementById('subjectsView');
             const chaptersView = document.getElementById('chaptersView');
             const quizView = document.getElementById('quizView');
-            if(subjectsView) subjectsView.classList.add('active');
-            if(chaptersView) chaptersView.classList.remove('active');
-            if(quizView) quizView.classList.remove('active');
+
+            if (!state || state.view === 'home') {
+                document.body.classList.remove('quiz-mode');
+                if(subjectsView) subjectsView.classList.add('active');
+                if(chaptersView) chaptersView.classList.remove('active');
+                if(quizView) quizView.style.display = 'none';
+            } else if (state.view === 'chapters') {
+                document.body.classList.remove('quiz-mode');
+                if(subjectsView) subjectsView.classList.remove('active');
+                if(chaptersView) chaptersView.classList.add('active');
+                if(quizView) quizView.style.display = 'none';
+            }
+        });
+
+        function goHome() {
+            document.body.classList.remove('quiz-mode');
+            document.getElementById('subjectsView').classList.add('active');
+            document.getElementById('chaptersView').classList.remove('active');
+            document.getElementById('quizView').style.display = 'none';
+            window.history.pushState({ view: 'home' }, '', '');
+        }
+
+        function backToChapters() {
+            document.body.classList.remove('quiz-mode');
+            document.getElementById('chaptersView').classList.add('active');
+            document.getElementById('quizView').style.display = 'none';
+            window.history.pushState({ view: 'chapters', subject: currentSubjectKey }, '', '');
         }
 
         function openSubject(subjectKey) {
             currentSubjectKey = subjectKey;
             const subData = scienceHubData[subjectKey];
-            const subTitle = document.getElementById('subjectTitle');
-            if(subTitle) subTitle.innerText = subData.title;
+            document.getElementById('subjectTitle').innerText = subData.title;
 
-            const listContainer = document.getElementById('chaptersListContainer');
-            if(listContainer) {
-                listContainer.innerHTML = '';
+            const container = document.getElementById('chaptersListContainer');
+            container.innerHTML = '';
 
-                for (let chKey in subData.chapters) {
-                    const ch = subData.chapters[chKey];
-                    const qCount = ch.questions ? ch.questions.length : 0;
-                    const btn = document.createElement('div');
-                    btn.className = 'chapter-item';
-                    btn.innerHTML = `<span>${ch.name}</span> <span style="font-size: 13px; color: #64748b; font-weight: normal;">(${qCount} प्रश्न)</span>`;
-                    btn.onclick = () => openChapter(subjectKey, chKey);
-                    listContainer.appendChild(btn);
-                }
-            }
+            // chapters एक ऑब्जेक्ट है, इसलिए Object.values का उपयोग करके लूप चलाएं
+            Object.values(subData.chapters).forEach(ch => {
+                const item = document.createElement('div');
+                item.className = 'chapter-item';
+                item.innerHTML = `<span>📖 ${ch.name}</span> <span style="font-size: 12px; color: #64748b;">(${ch.questions.length} प्रश्न)</span>`;
+                item.onclick = () => openChapter(ch);
+                container.appendChild(item);
+            });
 
-            const subjectsView = document.getElementById('subjectsView');
-            const chaptersView = document.getElementById('chaptersView');
-            const quizView = document.getElementById('quizView');
-            if(subjectsView) subjectsView.classList.remove('active');
-            if(chaptersView) chaptersView.classList.add('active');
-            if(quizView) quizView.classList.remove('active');
+            document.getElementById('subjectsView').classList.remove('active');
+            document.getElementById('chaptersView').classList.add('active');
+            document.getElementById('quizView').style.display = 'none';
+
+            window.history.pushState({ view: 'chapters', subject: subjectKey }, '', '');
         }
 
-        function openChapter(subKey, chKey) {
-            currentSubjectKey = subKey;
-            currentChapterKey = chKey;
+        function openChapter(chapterObj) {
+            currentChapterObj = chapterObj;
             currentQIndex = 0;
-            score = 0;
             userChoices = {};
 
-            const chaptersView = document.getElementById('chaptersView');
-            const quizView = document.getElementById('quizView');
-            if(chaptersView) chaptersView.style.display = 'none';
-            if(quizView) quizView.style.display = 'block';
-            
-            displayQuestion();
-        }
+            document.body.classList.add('quiz-mode');
 
-        function backToChapters() {
-            clearInterval(timer);
-            const quizView = document.getElementById('quizView');
-            const chaptersView = document.getElementById('chaptersView');
-            if(quizView) quizView.style.display = 'none';
-            if(chaptersView) chaptersView.style.display = 'block';
+            document.getElementById('quizView').innerHTML = `
+                <button class="back-btn" onclick="backToChapters()">⬅ चैप्टर्स पर वापस जाएं / Back to Chapters</button>
+                <div class="quiz-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; background: #1e293b; padding: 10px 15px; border-radius: 8px; color: white;">
+                        <span id="chapterBadge" style="font-size: 14px; font-weight: bold;"></span>
+                        <span style="font-size: 12px; background: #3b82f6; padding: 3px 10px; border-radius: 12px; font-weight: bold;">साइंस परीक्षा मोड (Exam Mode)</span>
+                    </div>
+                    
+                    <div id="paletteContainer" style="display: flex; flex-wrap: wrap; gap: 4px; margin: 10px 0; justify-content: center; padding: 8px; background: var(--card-bg, #f8fafc); border-radius: 8px; border: 1px solid #e2e8f0; max-height: 90px; overflow-y: auto;"></div>
+
+                    <div id="questionText" style="font-size: 18px; font-weight: bold; margin: 15px 0;"></div>
+                    <div id="optionsList" class="options-container"></div>
+                    
+                    <div class="quiz-nav" style="display: flex; justify-content: space-between; margin-top: 25px;">
+                        <button onclick="prevQuestion()" class="option-btn" style="width: auto; background: #64748b; color: white;">पिछला</button>
+                        <button onclick="nextQuestion()" class="option-btn" id="nextSubmitBtn" style="width: auto; background: #2563eb; color: white;">अगला</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('chaptersView').classList.remove('active');
+            document.getElementById('quizView').style.display = 'block';
+
+            displayQuestion();
+            window.history.pushState({ view: 'quiz', subject: currentSubjectKey }, '', '');
         }
 
         function displayQuestion() {
-            clearInterval(timer);
-            timeLeft = 30;
-            const timerEl = document.getElementById('timer');
-            if(timerEl) timerEl.innerText = `⏱️ ${timeLeft}s`;
+            const q = currentChapterObj.questions[currentQIndex];
+            document.getElementById('chapterBadge').innerText = `${currentChapterObj.name} — (प्रश्न ${currentQIndex + 1}/${currentChapterObj.questions.length})`;
+            document.getElementById('questionText').innerText = q.q;
 
-            const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
-            
-            if (currentQIndex >= chapterData.questions.length) {
-                showQuizResult(chapterData.questions.length);
-                return;
+            const nextBtn = document.getElementById('nextSubmitBtn');
+            if (nextBtn) {
+                if (currentQIndex === currentChapterObj.questions.length - 1) {
+                    nextBtn.innerText = "फाइनल सबमिट";
+                    nextBtn.style.background = "#16a34a";
+                } else {
+                    nextBtn.innerText = "अगला";
+                    nextBtn.style.background = "#2563eb";
+                }
             }
-
-            const badge = document.getElementById('chapterBadge');
-            if(badge) badge.innerText = `${chapterData.name} (प्रश्‍न ${currentQIndex + 1} / ${chapterData.questions.length})`;
-
-            const qData = chapterData.questions[currentQIndex];
-
-            // विकल्पों को शफल करने का लॉजिक
-            let combined = qData.options.map((opt, i) => ({ text: opt, isCorrect: i === qData.answer }));
-            for (let i = combined.length - 1; i > 0; i--) {
-                let j = Math.floor(Math.random() * (i + 1));
-                [combined[i], combined[j]] = [combined[j], combined[i]];
-            }
-            let shuffledOptions = combined.map(item => item.text);
-            let shuffledAnswer = combined.findIndex(item => item.isCorrect);
-
-            const qText = document.getElementById('questionText');
-            if(qText) qText.innerText = `Q. ${qData.q}`;
 
             const optionsList = document.getElementById('optionsList');
-            if(optionsList) {
-                optionsList.innerHTML = '';
-                const savedChoice = userChoices[currentQIndex];
-
-                shuffledOptions.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.innerText = opt;
-
-                    if (savedChoice !== undefined) {
-                        btn.disabled = true;
-                        if (idx === shuffledAnswer) {
-                            btn.classList.add('correct');
-                        } else if (idx === savedChoice) {
-                            btn.classList.add('wrong');
-                        }
-                    } else {
-                        btn.onclick = () => {
-                            if (btn.disabled) return;
-                            userChoices[currentQIndex] = idx;
-                            checkAnswer(idx, shuffledAnswer, qData.exp);
-                        };
-                    }
-                    optionsList.appendChild(btn);
-                });
-            }
-
-            const expBox = document.getElementById('explanationBox');
-            if (expBox) {
-                if (userChoices[currentQIndex] !== undefined) {
-                    expBox.innerText = qData.exp;
-                    expBox.style.display = 'block';
-                } else {
-                    expBox.style.display = 'none';
-                }
-            }
-
-            const prevBtn = document.getElementById('prevBtn');
-            if (prevBtn) {
-                if (currentQIndex === 0) {
-                    prevBtn.disabled = true;
-                    prevBtn.style.opacity = "0.5";
-                    prevBtn.style.cursor = "not-allowed";
-                } else {
-                    prevBtn.disabled = false;
-                    prevBtn.style.opacity = "1";
-                    prevBtn.style.cursor = "pointer";
-                }
-            }
+            optionsList.innerHTML = '';
             
-            if (userChoices[currentQIndex] === undefined) {
-                startTimer();
-            }
+            const userSelectedIdx = userChoices[currentQIndex];
+            const isDark = document.body.classList.contains('dark-mode');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                
+                if (userSelectedIdx === idx) {
+                    btn.style.background = isDark ? '#1e3a8a' : '#dbeafe';
+                    btn.style.borderColor = isDark ? '#60a5fa' : '#2563eb';
+                    btn.style.color = isDark ? '#ffffff' : '#0f172a';
+                    btn.style.fontWeight = 'bold';
+                } else {
+                    btn.style.background = isDark ? '#1e293b' : '#ffffff';
+                    btn.style.borderColor = isDark ? '#334155' : '#cbd5e1';
+                    btn.style.color = isDark ? '#f8fafc' : '#0f172a';
+                    btn.style.fontWeight = 'normal';
+                }
+
+                btn.onclick = () => selectOption(idx);
+                optionsList.appendChild(btn);
+            });
+
+            renderPalette();
         }
 
-        function startTimer() {
-            timer = setInterval(() => {
-                timeLeft--;
-                const timerEl = document.getElementById('timer');
-                if(timerEl) timerEl.innerText = `⏱️ ${timeLeft}s`;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
-                    if (currentQIndex < chapterData.questions.length - 1) {
-                        currentQIndex++;
-                        displayQuestion();
-                    } else {
-                        showQuizResult(chapterData.questions.length);
-                    }
-                }
-            }, 1000);
-        }
-
-        function checkAnswer(selected, correct, exp) {
-            clearInterval(timer);
-            const buttons = document.querySelectorAll('.option-btn');
+        function selectOption(selectedIdx) {
+            userChoices[currentQIndex] = selectedIdx;
+            const isDark = document.body.classList.contains('dark-mode');
             
-            buttons.forEach((btn, idx) => {
-                btn.disabled = true;
-                if (idx === correct) {
-                    btn.classList.add('correct');
-                } else if (idx === selected) {
-                    btn.classList.add('wrong');
+            const buttons = document.querySelectorAll('.options-list .option-btn');
+            buttons.forEach((b, idx) => {
+                if (idx === selectedIdx) {
+                    b.style.background = isDark ? '#1e3a8a' : '#dbeafe';
+                    b.style.borderColor = isDark ? '#60a5fa' : '#2563eb';
+                    b.style.color = isDark ? '#ffffff' : '#0f172a';
+                    b.style.fontWeight = 'bold';
+                } else {
+                    b.style.background = isDark ? '#1e293b' : '#ffffff';
+                    b.style.borderColor = isDark ? '#334155' : '#cbd5e1';
+                    b.style.color = isDark ? '#f8fafc' : '#0f172a';
+                    b.style.fontWeight = 'normal';
                 }
             });
 
-            if (selected === correct) {
-                score++;
-            }
-
-            const expBox = document.getElementById('explanationBox');
-            if (expBox) {
-                expBox.innerText = exp;
-                expBox.style.display = 'block';
-            }
+            renderPalette();
         }
 
-        function showQuizResult(totalQ) {
-            clearInterval(timer);
-            alert(`🎉 क्विज़ समाप्त!\nआपका कुल स्कोर: ${score} / ${totalQ}`);
-            score = 0;
-            currentQIndex = 0;
-            userChoices = {};
-            backToChapters();
+        function renderPalette() {
+            const container = document.getElementById('paletteContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            const isDark = document.body.classList.contains('dark-mode');
+            if (isDark) {
+                container.style.background = '#0f172a';
+                container.style.borderColor = '#334155';
+            } else {
+                container.style.background = '#f8fafc';
+                container.style.borderColor = '#e2e8f0';
+            
+           }
+
+            currentChapterObj.questions.forEach((_, idx) => {
+                const pBtn = document.createElement('button');
+                pBtn.innerText = idx + 1;
+                pBtn.style.width = '28px';
+                pBtn.style.height = '28px';
+                pBtn.style.borderRadius = '4px';
+                pBtn.style.cursor = 'pointer';
+                pBtn.style.fontWeight = 'bold';
+                pBtn.style.fontSize = '11px';
+
+                const isAnswered = userChoices[idx] !== undefined;
+                if (isAnswered) {
+                    pBtn.style.background = '#22c55e';
+                    pBtn.style.color = 'white';
+                    pBtn.style.border = idx === currentQIndex ? '2px solid #ffffff' : '1px solid #16a34a';
+                } else {
+                    pBtn.style.background = isDark ? '#1e293b' : '#ffffff';
+                    pBtn.style.color = isDark ? '#f8fafc' : '#334155';
+                    pBtn.style.border = idx === currentQIndex ? (isDark ? '2px solid #60a5fa' : '2px solid #0f172a') : (isDark ? '1px solid #475569' : '1px solid #cbd5e1');
+                }
+
+                pBtn.onclick = () => {
+                    currentQIndex = idx;
+                    displayQuestion();
+                };
+                container.appendChild(pBtn);
+            });
         }
 
-        // नेविगेशन बटन्स के लिए इवेंट लिसनर्स
-        document.getElementById('nextBtn').addEventListener('click', function() {
-            clearInterval(timer);
-            const chapterData = scienceHubData[currentSubjectKey].chapters[currentChapterKey];
-            if (currentQIndex < chapterData.questions.length - 1) {
+        function nextQuestion() {
+            if (currentQIndex < currentChapterObj.questions.length - 1) {
                 currentQIndex++;
                 displayQuestion();
             } else {
-                showQuizResult(chapterData.questions.length);
+                if (confirm("क्या आप वाकई अपनी साइंस क्विज सबमिट करना चाहते हैं?")) {
+                    showQuizResult();
+                }
             }
-        });
+        }
 
-        document.getElementById('prevBtn').addEventListener('click', function() {
-            clearInterval(timer);
+        function prevQuestion() {
             if (currentQIndex > 0) {
                 currentQIndex--;
                 displayQuestion();
             }
-        });
-              // डार्क मोड को चालू और बंद करने का कोड
-        const darkModeBtn = document.getElementById('darkModeBtn');
-        if (darkModeBtn) {
-            darkModeBtn.addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                
-                // यह मोबाइल में याद रखेगा कि डार्क मोड ऑन है या नहीं
-                if (document.body.classList.contains('dark-mode')) {
-                    localStorage.setItem('theme', 'dark');
+        }
+
+        function showQuizResult() {
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let notAttemptedCount = 0;
+            const questions = currentChapterObj.questions;
+
+            questions.forEach((q, idx) => {
+                const userAns = userChoices[idx];
+                if (userAns === q.answer) {
+                    correctCount++;
+                } else if (userAns !== undefined) {
+                    incorrectCount++;
                 } else {
-                    localStorage.setItem('theme', 'light');
+                    notAttemptedCount++;
                 }
             });
 
-            // ऐप खोलते ही चेक करेगा कि पहले से डार्क मोड सेट था या नहीं
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
+            const quizView = document.getElementById('quizView');
+            quizView.innerHTML = `
+                <div style="max-width: 750px; margin: 0 auto; padding: 10px; text-align: center;">
+                    <h2 style="margin-bottom: 5px;">🎉 क्विज समाप्त!</h2>
+                    <h3 style="color: #2563eb; margin-bottom: 8px;">आपका स्कोर: ${correctCount} / ${questions.length}</h3>
+                    <p style="font-size: 13px; color: #475569; margin-bottom: 15px;">
+                        ✅ सही: ${correctCount} | ❌ गलत: ${incorrectCount} | ⚠️ उत्तर नहीं दिया: ${notAttemptedCount}
+                    </p>
+                    
+                    <div style="margin-bottom: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;">
+                        <button onclick="renderReviewList('all')" id="filter-all" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #2563eb; background: #2563eb; color: white; cursor: pointer; font-size: 12px;">सभी (${questions.length})</button>
+                        <button onclick="renderReviewList('correct')" id="filter-correct" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #22c55e; background: white; color: #22c55e; cursor: pointer; font-size: 12px; font-weight: bold;">सही (${correctCount})</button>
+                        <button onclick="renderReviewList('incorrect')" id="filter-incorrect" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #ef4444; background: white; color: #ef4444; cursor: pointer; font-size: 12px; font-weight: bold;">गलत (${incorrectCount})</button>
+                        <button onclick="renderReviewList('notAttempted')" id="filter-notAttempted" style="padding: 6px 10px; border-radius: 6px; border: 1px solid #d97706; background: white; color: #d97706; cursor: pointer; font-size: 12px; font-weight: bold;">उत्तर नहीं दिया (${notAttemptedCount})</button>
+                    </div>
+
+                    <div id="reviewListContainer" style="max-height: 50vh; overflow-y: auto; padding-right: 5px; margin-bottom: 20px; text-align: left;">
+                    </div>
+
+                    <button onclick="backToChapters()" class="option-btn" style="background: #2563eb; color: white; font-weight: bold; cursor: pointer; padding: 12px 24px; border-radius: 8px; border: none; width: 100%;">चैप्टर सूची पर वापस जाएं</button>
+                </div>
+            `;
+
+            renderReviewList('all');
+        }
+
+        function renderReviewList(filterType) {
+            const questions = currentChapterObj.questions;
+            let reviewHTML = '';
+
+            ['all', 'correct', 'incorrect', 'notAttempted'].forEach(type => {
+                const btn = document.getElementById(`filter-${type}`);
+                if(btn) {
+                    if(type === filterType) {
+                        if(type === 'correct') btn.style.background = '#22c55e';
+                        else if(type === 'incorrect') btn.style.background = '#ef4444';
+                        else if(type === 'notAttempted') btn.style.background = '#d97706';
+                        else btn.style.background = '#2563eb';
+                        btn.style.color = 'white';
+                    } else {
+                        btn.style.background = 'white';
+                        if(type === 'correct') btn.style.color = '#22c55e';
+                        else if(type === 'incorrect') btn.style.color = '#ef4444';
+                        else if(type === 'notAttempted') btn.style.color = '#d97706';
+                        else btn.style.color = '#2563eb';
+                    }
+                }
+            });
+
+            questions.forEach((q, idx) => {
+                const userAns = userChoices[idx];
+                const isAttempted = userAns !== undefined;
+                const isCorrect = (userAns === q.answer);
+
+                if (filterType === 'correct' && !isCorrect) return;
+                if (filterType === 'incorrect' && (!isAttempted || isCorrect)) return;
+                if (filterType === 'notAttempted' && isAttempted) return;
+
+                let userAnsText = isAttempted ? q.options[userAns] : '<span style="color:#d97706; font-weight:bold;">उत्तर नहीं दिया (Not Attempted)</span>';
+                
+                let cardBg = 'rgba(100, 116, 139, 0.08)';
+                let borderColor = '#64748b';
+                let statusIcon = '⚠️';
+
+                if (isAttempted) {
+                    cardBg = isCorrect ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)';
+                    borderColor = isCorrect ? '#22c55e' : '#ef4444';
+                    statusIcon = isCorrect ? '✅' : '❌';
+                }
+
+                reviewHTML += `
+                    <div style="background: ${cardBg}; border-left: 4px solid ${borderColor}; padding: 14px; margin-bottom: 12px; border-radius: 8px; font-size: 14px;">
+                        <p style="font-weight: bold; margin-bottom: 6px; color: inherit;">Q${idx + 1}: ${q.q}</p>
+                        <p style="margin: 4px 0;"><b>आपका उत्तर:</b> ${userAnsText} ${statusIcon}</p>
+                        ${!isCorrect ? `<p style="margin: 4px 0; color: #16a34a;"><b>सही उत्तर:</b> ${q.options[q.answer]}</p>` : ''}
+                        <p style="margin: 6px 0 0 0; font-size: 13px; color: #64748b;"><b>स्पष्टीकरण:</b> ${q.exp}</p>
+                    </div>
+                `;
+            });
+
+            if(reviewHTML === '') {
+                reviewHTML = `<p style="text-align: center; color: #64748b; padding: 20px;">इस श्रेणी में कोई प्रश्न नहीं है।</p>`;
             }
+
+            const container = document.getElementById('reviewListContainer');
+            if(container) {
+                container.innerHTML = reviewHTML;
+            }
+        }
+
+        // डार्क मोड टॉगल
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('science_theme', 'dark');
+            } else {
+                localStorage.setItem('science_theme', 'light');
+            }
+        }
+
+        if (localStorage.getItem('science_theme') === 'dark') {
+            document.body.classList.add('dark-mode');
         }
     </script>
 </body>
-</html>                          
-            
+</html>
+                                                   
